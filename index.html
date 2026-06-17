@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)file:///C:/Users/ginah/Downloads/expense_tracker_15.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foxflight Air Ambulance – Expense Report</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; background: #f0f0f0; color: #111; font-size: 13px; }
+.page-wrap { max-width: 820px; margin: 0 auto; padding: 1.5rem; }
+.sheet { background: #fff; border: 1px solid #aaa; padding: 24px 28px 28px; }
+
+.header { text-align: center; margin-bottom: 18px; }
+.logo-area { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 2px; }
+.company-name { font-size: 28px; font-weight: 900; letter-spacing: 1px; color: #1a1a1a; }
+.company-name span.fox { color: #1a3caa; }
+.company-name span.flight { color: #cc2222; }
+.tagline { font-size: 11px; letter-spacing: 3px; color: #1a3caa; font-weight: 700; text-transform: uppercase; margin-top: 1px; }
+
+.trip-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; table-layout: fixed; }
+.trip-table tr { height: 32px; }
+.trip-table td { border: 1px solid #555; padding: 0 8px; vertical-align: middle; overflow: hidden; }
+.trip-table .lbl       { font-weight: 700; font-size: 12px; white-space: nowrap; width: 110px; }
+.trip-table .val-wide  { width: auto; }
+.trip-table .lbl-right { width: 115px; font-weight: 700; font-size: 10px; white-space: nowrap; }
+.trip-table .val-right { width: 160px; }
+.trip-table input { border: none; outline: none; width: 100%; font-size: 12px; background: transparent; font-family: Arial, sans-serif; display: block; }
+
+.expense-type { font-size: 13px; margin-bottom: 10px; }
+.expense-type strong { margin-left: 1rem; }
+
+.exp-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.exp-table th { border: 1px solid #555; padding: 5px 6px; font-size: 11px; font-weight: 700; text-align: center; background: #fff; line-height: 1.3; }
+.exp-table td { border: 1px solid #555; padding: 2px 4px; height: 26px; vertical-align: middle; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; }
+.exp-table td input, .exp-table td select { width: 100%; border: none; outline: none; font-size: 12px; background: transparent; font-family: Arial, sans-serif; padding: 1px 2px; }
+.exp-table td.num { text-align: center; font-size: 11px; color: #888; width: 38px; }
+.exp-table td.cad-out { text-align: right; font-size: 12px; font-weight: 600; padding-right: 6px; width: 95px; }
+.exp-table td.del-col { width: 28px; text-align: center; border-left: none; }
+
+.total-row td { border: 1px solid #555; padding: 5px 6px; font-weight: 700; font-size: 12px; }
+.total-row .total-lbl { text-align: center; }
+.total-row .total-val { text-align: right; padding-right: 6px; font-size: 13px; }
+
+.sig-section { margin-top: 22px; display: flex; justify-content: space-between; align-items: flex-end; }
+.sig-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-top: 3px; }
+.footnote { text-align: center; font-size: 11px; font-weight: 700; margin-top: 18px; }
+
+/* Action bar */
+.actions { display: flex; gap: 10px; margin-top: 14px; justify-content: space-between; align-items: center; }
+.btn-add { background: none; border: 1.5px dashed #aaa; color: #666; padding: 6px 14px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+.btn-add:hover { border-color: #1a3caa; color: #1a3caa; }
+.btn-print { background: #1a3caa; color: #fff; border: none; padding: 8px 20px; border-radius: 5px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 7px; }
+.btn-print:hover { background: #153090; }
+.btn-clear { background: none; border: 1px solid #ccc; color: #666; padding: 8px 14px; border-radius: 5px; font-size: 12px; cursor: pointer; }
+.btn-clear:hover { background: #f5f5f5; }
+.btn-del { background: none; border: none; cursor: pointer; color: #ccc; font-size: 13px; padding: 0; line-height: 1; }
+.btn-del:hover { color: #cc2222; }
+
+/* Save/Load bar */
+.save-bar {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.save-bar-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #888; margin-right: 4px; }
+.btn-save { background: #2a7a2a; color: #fff; border: none; padding: 7px 16px; border-radius: 5px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.btn-save:hover { background: #1e5e1e; }
+.btn-load { background: #1a3caa; color: #fff; border: none; padding: 7px 16px; border-radius: 5px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.btn-load:hover { background: #153090; }
+.btn-delete-saved { background: none; border: 1px solid #e05050; color: #e05050; padding: 7px 12px; border-radius: 5px; font-size: 12px; cursor: pointer; }
+.btn-delete-saved:hover { background: #fff0f0; }
+.saved-select { padding: 7px 8px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Arial, sans-serif; min-width: 160px; background: #fff; }
+.save-status { font-size: 11px; color: #888; font-style: italic; margin-left: 4px; }
+
+@media print {
+  @page { size: letter portrait; margin: 0.5in; }
+  body { background: #fff; font-size: 11px; }
+  .page-wrap { padding: 0; max-width: 100%; width: 100%; }
+  .actions, .save-bar, .btn-del, .del-col, .del-col-h { display: none !important; }
+  .sheet { border: none; padding: 0; width: 100%; }
+  .trip-table { width: 100%; }
+  .exp-table { width: 100%; table-layout: auto; }
+  .exp-table th, .exp-table td { font-size: 10px; padding: 2px 4px; }
+  .exp-table td input, .exp-table td select { font-size: 10px; }
+  .trip-table input { font-size: 11px; }
+  .print-hide { visibility: hidden !important; }
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+<div class="sheet">
+
+  <div class="header">
+    <div>
+        <div class="company-name"><span class="fox">FOX</span><span class="flight">FLIGHT</span></div>
+        <div class="tagline">Air Ambulance</div>
+      </div>
+  </div>
+
+  <table class="trip-table">
+    <tbody><tr>
+      <td class="lbl">Patient Name</td>
+      <td class="val-wide"><input type="text" id="patientName" tabindex="1"></td>
+      <td class="lbl-right">Flight #</td>
+      <td class="val-right">
+        <div style="display:flex;align-items:center;gap:0;">
+          <span style="font-size:12px;font-weight:700;color:#555;white-space:nowrap;padding-right:2px;">J2026-</span>
+          <input type="text" id="flightNum" tabindex="4" style="flex:1;min-width:0;">
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="lbl">From</td>
+      <td class="val-wide"><input type="text" id="fromLoc" tabindex="2"></td>
+      <td class="lbl-right">Departure Date / Time</td>
+      <td class="val-right"><input type="datetime-local" id="depDateTime" tabindex="5"></td>
+    </tr>
+    <tr>
+      <td class="lbl">To</td>
+      <td class="val-wide"><input type="text" id="toLoc" tabindex="3"></td>
+      <td class="lbl-right">Return Date / Time</td>
+      <td class="val-right"><input type="datetime-local" id="retDateTime" tabindex="6"></td>
+    </tr>
+  </tbody></table>
+
+  <div class="expense-type">Type of Expense: <strong>PERSONAL CASH</strong></div>
+
+  <table class="exp-table" id="expTable">
+    <thead>
+      <tr>
+        <th style="width:38px">Receipt<br>No.</th>
+        <th style="width:100px">Date</th>
+        <th>Explanation of Expense</th>
+        <th style="width:130px">Local Currency</th>
+        <th style="width:90px">Exchange<br>Rate</th>
+        <th style="width:95px">Canadian<br>Equivalent</th>
+        <th class="del-col-h" style="width:28px;border:none;background:transparent;"></th>
+      </tr>
+    </thead>
+    <tbody id="expBody"><tr><td class="num">1</td><td><input type="date" value=""></td><td><input type="text" value=""></td><td><div style="display:flex;gap:3px;align-items:center;"><input type="number" min="0" step="0.01" placeholder="0.00" style="flex:1;min-width:0;" value="" oninput="calcRow(this)"><select style="width:62px;font-size:11px;" onchange="calcRow(this)"><option value="AED">AED</option><option value="AFN">AFN</option><option value="ALL">ALL</option><option value="AMD">AMD</option><option value="ANG">ANG</option><option value="AOA">AOA</option><option value="ARS">ARS</option><option value="AUD">AUD</option><option value="AWG">AWG</option><option value="AZN">AZN</option><option value="BAM">BAM</option><option value="BBD">BBD</option><option value="BDT">BDT</option><option value="BGN">BGN</option><option value="BHD">BHD</option><option value="BIF">BIF</option><option value="BMD">BMD</option><option value="BND">BND</option><option value="BOB">BOB</option><option value="BRL">BRL</option><option value="BSD">BSD</option><option value="BTN">BTN</option><option value="BWP">BWP</option><option value="BYN">BYN</option><option value="BZD">BZD</option><option value="CAD" selected="">CAD</option><option value="CDF">CDF</option><option value="CHF">CHF</option><option value="CLP">CLP</option><option value="CNY">CNY</option><option value="COP">COP</option><option value="CRC">CRC</option><option value="CUP">CUP</option><option value="CVE">CVE</option><option value="CZK">CZK</option><option value="DJF">DJF</option><option value="DKK">DKK</option><option value="DOP">DOP</option><option value="DZD">DZD</option><option value="EGP">EGP</option><option value="ERN">ERN</option><option value="ETB">ETB</option><option value="EUR">EUR</option><option value="FJD">FJD</option><option value="FKP">FKP</option><option value="GBP">GBP</option><option value="GEL">GEL</option><option value="GHS">GHS</option><option value="GIP">GIP</option><option value="GMD">GMD</option><option value="GNF">GNF</option><option value="GTQ">GTQ</option><option value="GYD">GYD</option><option value="HKD">HKD</option><option value="HNL">HNL</option><option value="HRK">HRK</option><option value="HTG">HTG</option><option value="HUF">HUF</option><option value="IDR">IDR</option><option value="ILS">ILS</option><option value="INR">INR</option><option value="IQD">IQD</option><option value="IRR">IRR</option><option value="ISK">ISK</option><option value="JMD">JMD</option><option value="JOD">JOD</option><option value="JPY">JPY</option><option value="KES">KES</option><option value="KGS">KGS</option><option value="KHR">KHR</option><option value="KMF">KMF</option><option value="KPW">KPW</option><option value="KRW">KRW</option><option value="KWD">KWD</option><option value="KYD">KYD</option><option value="KZT">KZT</option><option value="LAK">LAK</option><option value="LBP">LBP</option><option value="LKR">LKR</option><option value="LRD">LRD</option><option value="LSL">LSL</option><option value="LYD">LYD</option><option value="MAD">MAD</option><option value="MDL">MDL</option><option value="MGA">MGA</option><option value="MKD">MKD</option><option value="MMK">MMK</option><option value="MNT">MNT</option><option value="MOP">MOP</option><option value="MRU">MRU</option><option value="MUR">MUR</option><option value="MVR">MVR</option><option value="MWK">MWK</option><option value="MXN">MXN</option><option value="MYR">MYR</option><option value="MZN">MZN</option><option value="NAD">NAD</option><option value="NGN">NGN</option><option value="NIO">NIO</option><option value="NOK">NOK</option><option value="NPR">NPR</option><option value="NZD">NZD</option><option value="OMR">OMR</option><option value="PAB">PAB</option><option value="PEN">PEN</option><option value="PGK">PGK</option><option value="PHP">PHP</option><option value="PKR">PKR</option><option value="PLN">PLN</option><option value="PYG">PYG</option><option value="QAR">QAR</option><option value="RON">RON</option><option value="RSD">RSD</option><option value="RUB">RUB</option><option value="RWF">RWF</option><option value="SAR">SAR</option><option value="SBD">SBD</option><option value="SCR">SCR</option><option value="SDG">SDG</option><option value="SEK">SEK</option><option value="SGD">SGD</option><option value="SHP">SHP</option><option value="SLL">SLL</option><option value="SOS">SOS</option><option value="SRD">SRD</option><option value="STN">STN</option><option value="SVC">SVC</option><option value="SYP">SYP</option><option value="SZL">SZL</option><option value="THB">THB</option><option value="TJS">TJS</option><option value="TMT">TMT</option><option value="TND">TND</option><option value="TOP">TOP</option><option value="TRY">TRY</option><option value="TTD">TTD</option><option value="TWD">TWD</option><option value="TZS">TZS</option><option value="UAH">UAH</option><option value="UGX">UGX</option><option value="USD">USD</option><option value="UYU">UYU</option><option value="UZS">UZS</option><option value="VES">VES</option><option value="VND">VND</option><option value="VUV">VUV</option><option value="WST">WST</option><option value="XAF">XAF</option><option value="XCD">XCD</option><option value="XOF">XOF</option><option value="XPF">XPF</option><option value="YER">YER</option><option value="ZAR">ZAR</option><option value="ZMW">ZMW</option><option value="ZWL">ZWL</option></select></div></td><td><input type="number" min="0" step="any" placeholder="" value="" oninput="calcRow(this)"></td><td class="cad-out">—</td><td class="del-col"><button class="btn-del" onclick="delRow(this)" title="Remove row">×</button></td></tr><tr><td class="num">2</td><td><input type="date" value=""></td><td><input type="text" value=""></td><td><div style="display:flex;gap:3px;align-items:center;"><input type="number" min="0" step="0.01" placeholder="0.00" style="flex:1;min-width:0;" value="" oninput="calcRow(this)"><select style="width:62px;font-size:11px;" onchange="calcRow(this)"><option value="AED">AED</option><option value="AFN">AFN</option><option value="ALL">ALL</option><option value="AMD">AMD</option><option value="ANG">ANG</option><option value="AOA">AOA</option><option value="ARS">ARS</option><option value="AUD">AUD</option><option value="AWG">AWG</option><option value="AZN">AZN</option><option value="BAM">BAM</option><option value="BBD">BBD</option><option value="BDT">BDT</option><option value="BGN">BGN</option><option value="BHD">BHD</option><option value="BIF">BIF</option><option value="BMD">BMD</option><option value="BND">BND</option><option value="BOB">BOB</option><option value="BRL">BRL</option><option value="BSD">BSD</option><option value="BTN">BTN</option><option value="BWP">BWP</option><option value="BYN">BYN</option><option value="BZD">BZD</option><option value="CAD" selected="">CAD</option><option value="CDF">CDF</option><option value="CHF">CHF</option><option value="CLP">CLP</option><option value="CNY">CNY</option><option value="COP">COP</option><option value="CRC">CRC</option><option value="CUP">CUP</option><option value="CVE">CVE</option><option value="CZK">CZK</option><option value="DJF">DJF</option><option value="DKK">DKK</option><option value="DOP">DOP</option><option value="DZD">DZD</option><option value="EGP">EGP</option><option value="ERN">ERN</option><option value="ETB">ETB</option><option value="EUR">EUR</option><option value="FJD">FJD</option><option value="FKP">FKP</option><option value="GBP">GBP</option><option value="GEL">GEL</option><option value="GHS">GHS</option><option value="GIP">GIP</option><option value="GMD">GMD</option><option value="GNF">GNF</option><option value="GTQ">GTQ</option><option value="GYD">GYD</option><option value="HKD">HKD</option><option value="HNL">HNL</option><option value="HRK">HRK</option><option value="HTG">HTG</option><option value="HUF">HUF</option><option value="IDR">IDR</option><option value="ILS">ILS</option><option value="INR">INR</option><option value="IQD">IQD</option><option value="IRR">IRR</option><option value="ISK">ISK</option><option value="JMD">JMD</option><option value="JOD">JOD</option><option value="JPY">JPY</option><option value="KES">KES</option><option value="KGS">KGS</option><option value="KHR">KHR</option><option value="KMF">KMF</option><option value="KPW">KPW</option><option value="KRW">KRW</option><option value="KWD">KWD</option><option value="KYD">KYD</option><option value="KZT">KZT</option><option value="LAK">LAK</option><option value="LBP">LBP</option><option value="LKR">LKR</option><option value="LRD">LRD</option><option value="LSL">LSL</option><option value="LYD">LYD</option><option value="MAD">MAD</option><option value="MDL">MDL</option><option value="MGA">MGA</option><option value="MKD">MKD</option><option value="MMK">MMK</option><option value="MNT">MNT</option><option value="MOP">MOP</option><option value="MRU">MRU</option><option value="MUR">MUR</option><option value="MVR">MVR</option><option value="MWK">MWK</option><option value="MXN">MXN</option><option value="MYR">MYR</option><option value="MZN">MZN</option><option value="NAD">NAD</option><option value="NGN">NGN</option><option value="NIO">NIO</option><option value="NOK">NOK</option><option value="NPR">NPR</option><option value="NZD">NZD</option><option value="OMR">OMR</option><option value="PAB">PAB</option><option value="PEN">PEN</option><option value="PGK">PGK</option><option value="PHP">PHP</option><option value="PKR">PKR</option><option value="PLN">PLN</option><option value="PYG">PYG</option><option value="QAR">QAR</option><option value="RON">RON</option><option value="RSD">RSD</option><option value="RUB">RUB</option><option value="RWF">RWF</option><option value="SAR">SAR</option><option value="SBD">SBD</option><option value="SCR">SCR</option><option value="SDG">SDG</option><option value="SEK">SEK</option><option value="SGD">SGD</option><option value="SHP">SHP</option><option value="SLL">SLL</option><option value="SOS">SOS</option><option value="SRD">SRD</option><option value="STN">STN</option><option value="SVC">SVC</option><option value="SYP">SYP</option><option value="SZL">SZL</option><option value="THB">THB</option><option value="TJS">TJS</option><option value="TMT">TMT</option><option value="TND">TND</option><option value="TOP">TOP</option><option value="TRY">TRY</option><option value="TTD">TTD</option><option value="TWD">TWD</option><option value="TZS">TZS</option><option value="UAH">UAH</option><option value="UGX">UGX</option><option value="USD">USD</option><option value="UYU">UYU</option><option value="UZS">UZS</option><option value="VES">VES</option><option value="VND">VND</option><option value="VUV">VUV</option><option value="WST">WST</option><option value="XAF">XAF</option><option value="XCD">XCD</option><option value="XOF">XOF</option><option value="XPF">XPF</option><option value="YER">YER</option><option value="ZAR">ZAR</option><option value="ZMW">ZMW</option><option value="ZWL">ZWL</option></select></div></td><td><input type="number" min="0" step="any" placeholder="" value="" oninput="calcRow(this)"></td><td class="cad-out">—</td><td class="del-col"><button class="btn-del" onclick="delRow(this)" title="Remove row">×</button></td></tr><tr><td class="num">3</td><td><input type="date" value=""></td><td><input type="text" value=""></td><td><div style="display:flex;gap:3px;align-items:center;"><input type="number" min="0" step="0.01" placeholder="0.00" style="flex:1;min-width:0;" value="" oninput="calcRow(this)"><select style="width:62px;font-size:11px;" onchange="calcRow(this)"><option value="AED">AED</option><option value="AFN">AFN</option><option value="ALL">ALL</option><option value="AMD">AMD</option><option value="ANG">ANG</option><option value="AOA">AOA</option><option value="ARS">ARS</option><option value="AUD">AUD</option><option value="AWG">AWG</option><option value="AZN">AZN</option><option value="BAM">BAM</option><option value="BBD">BBD</option><option value="BDT">BDT</option><option value="BGN">BGN</option><option value="BHD">BHD</option><option value="BIF">BIF</option><option value="BMD">BMD</option><option value="BND">BND</option><option value="BOB">BOB</option><option value="BRL">BRL</option><option value="BSD">BSD</option><option value="BTN">BTN</option><option value="BWP">BWP</option><option value="BYN">BYN</option><option value="BZD">BZD</option><option value="CAD" selected="">CAD</option><option value="CDF">CDF</option><option value="CHF">CHF</option><option value="CLP">CLP</option><option value="CNY">CNY</option><option value="COP">COP</option><option value="CRC">CRC</option><option value="CUP">CUP</option><option value="CVE">CVE</option><option value="CZK">CZK</option><option value="DJF">DJF</option><option value="DKK">DKK</option><option value="DOP">DOP</option><option value="DZD">DZD</option><option value="EGP">EGP</option><option value="ERN">ERN</option><option value="ETB">ETB</option><option value="EUR">EUR</option><option value="FJD">FJD</option><option value="FKP">FKP</option><option value="GBP">GBP</option><option value="GEL">GEL</option><option value="GHS">GHS</option><option value="GIP">GIP</option><option value="GMD">GMD</option><option value="GNF">GNF</option><option value="GTQ">GTQ</option><option value="GYD">GYD</option><option value="HKD">HKD</option><option value="HNL">HNL</option><option value="HRK">HRK</option><option value="HTG">HTG</option><option value="HUF">HUF</option><option value="IDR">IDR</option><option value="ILS">ILS</option><option value="INR">INR</option><option value="IQD">IQD</option><option value="IRR">IRR</option><option value="ISK">ISK</option><option value="JMD">JMD</option><option value="JOD">JOD</option><option value="JPY">JPY</option><option value="KES">KES</option><option value="KGS">KGS</option><option value="KHR">KHR</option><option value="KMF">KMF</option><option value="KPW">KPW</option><option value="KRW">KRW</option><option value="KWD">KWD</option><option value="KYD">KYD</option><option value="KZT">KZT</option><option value="LAK">LAK</option><option value="LBP">LBP</option><option value="LKR">LKR</option><option value="LRD">LRD</option><option value="LSL">LSL</option><option value="LYD">LYD</option><option value="MAD">MAD</option><option value="MDL">MDL</option><option value="MGA">MGA</option><option value="MKD">MKD</option><option value="MMK">MMK</option><option value="MNT">MNT</option><option value="MOP">MOP</option><option value="MRU">MRU</option><option value="MUR">MUR</option><option value="MVR">MVR</option><option value="MWK">MWK</option><option value="MXN">MXN</option><option value="MYR">MYR</option><option value="MZN">MZN</option><option value="NAD">NAD</option><option value="NGN">NGN</option><option value="NIO">NIO</option><option value="NOK">NOK</option><option value="NPR">NPR</option><option value="NZD">NZD</option><option value="OMR">OMR</option><option value="PAB">PAB</option><option value="PEN">PEN</option><option value="PGK">PGK</option><option value="PHP">PHP</option><option value="PKR">PKR</option><option value="PLN">PLN</option><option value="PYG">PYG</option><option value="QAR">QAR</option><option value="RON">RON</option><option value="RSD">RSD</option><option value="RUB">RUB</option><option value="RWF">RWF</option><option value="SAR">SAR</option><option value="SBD">SBD</option><option value="SCR">SCR</option><option value="SDG">SDG</option><option value="SEK">SEK</option><option value="SGD">SGD</option><option value="SHP">SHP</option><option value="SLL">SLL</option><option value="SOS">SOS</option><option value="SRD">SRD</option><option value="STN">STN</option><option value="SVC">SVC</option><option value="SYP">SYP</option><option value="SZL">SZL</option><option value="THB">THB</option><option value="TJS">TJS</option><option value="TMT">TMT</option><option value="TND">TND</option><option value="TOP">TOP</option><option value="TRY">TRY</option><option value="TTD">TTD</option><option value="TWD">TWD</option><option value="TZS">TZS</option><option value="UAH">UAH</option><option value="UGX">UGX</option><option value="USD">USD</option><option value="UYU">UYU</option><option value="UZS">UZS</option><option value="VES">VES</option><option value="VND">VND</option><option value="VUV">VUV</option><option value="WST">WST</option><option value="XAF">XAF</option><option value="XCD">XCD</option><option value="XOF">XOF</option><option value="XPF">XPF</option><option value="YER">YER</option><option value="ZAR">ZAR</option><option value="ZMW">ZMW</option><option value="ZWL">ZWL</option></select></div></td><td><input type="number" min="0" step="any" placeholder="" value="" oninput="calcRow(this)"></td><td class="cad-out">—</td><td class="del-col"><button class="btn-del" onclick="delRow(this)" title="Remove row">×</button></td></tr><tr><td class="num">4</td><td><input type="date" value=""></td><td><input type="text" value=""></td><td><div style="display:flex;gap:3px;align-items:center;"><input type="number" min="0" step="0.01" placeholder="0.00" style="flex:1;min-width:0;" value="" oninput="calcRow(this)"><select style="width:62px;font-size:11px;" onchange="calcRow(this)"><option value="AED">AED</option><option value="AFN">AFN</option><option value="ALL">ALL</option><option value="AMD">AMD</option><option value="ANG">ANG</option><option value="AOA">AOA</option><option value="ARS">ARS</option><option value="AUD">AUD</option><option value="AWG">AWG</option><option value="AZN">AZN</option><option value="BAM">BAM</option><option value="BBD">BBD</option><option value="BDT">BDT</option><option value="BGN">BGN</option><option value="BHD">BHD</option><option value="BIF">BIF</option><option value="BMD">BMD</option><option value="BND">BND</option><option value="BOB">BOB</option><option value="BRL">BRL</option><option value="BSD">BSD</option><option value="BTN">BTN</option><option value="BWP">BWP</option><option value="BYN">BYN</option><option value="BZD">BZD</option><option value="CAD" selected="">CAD</option><option value="CDF">CDF</option><option value="CHF">CHF</option><option value="CLP">CLP</option><option value="CNY">CNY</option><option value="COP">COP</option><option value="CRC">CRC</option><option value="CUP">CUP</option><option value="CVE">CVE</option><option value="CZK">CZK</option><option value="DJF">DJF</option><option value="DKK">DKK</option><option value="DOP">DOP</option><option value="DZD">DZD</option><option value="EGP">EGP</option><option value="ERN">ERN</option><option value="ETB">ETB</option><option value="EUR">EUR</option><option value="FJD">FJD</option><option value="FKP">FKP</option><option value="GBP">GBP</option><option value="GEL">GEL</option><option value="GHS">GHS</option><option value="GIP">GIP</option><option value="GMD">GMD</option><option value="GNF">GNF</option><option value="GTQ">GTQ</option><option value="GYD">GYD</option><option value="HKD">HKD</option><option value="HNL">HNL</option><option value="HRK">HRK</option><option value="HTG">HTG</option><option value="HUF">HUF</option><option value="IDR">IDR</option><option value="ILS">ILS</option><option value="INR">INR</option><option value="IQD">IQD</option><option value="IRR">IRR</option><option value="ISK">ISK</option><option value="JMD">JMD</option><option value="JOD">JOD</option><option value="JPY">JPY</option><option value="KES">KES</option><option value="KGS">KGS</option><option value="KHR">KHR</option><option value="KMF">KMF</option><option value="KPW">KPW</option><option value="KRW">KRW</option><option value="KWD">KWD</option><option value="KYD">KYD</option><option value="KZT">KZT</option><option value="LAK">LAK</option><option value="LBP">LBP</option><option value="LKR">LKR</option><option value="LRD">LRD</option><option value="LSL">LSL</option><option value="LYD">LYD</option><option value="MAD">MAD</option><option value="MDL">MDL</option><option value="MGA">MGA</option><option value="MKD">MKD</option><option value="MMK">MMK</option><option value="MNT">MNT</option><option value="MOP">MOP</option><option value="MRU">MRU</option><option value="MUR">MUR</option><option value="MVR">MVR</option><option value="MWK">MWK</option><option value="MXN">MXN</option><option value="MYR">MYR</option><option value="MZN">MZN</option><option value="NAD">NAD</option><option value="NGN">NGN</option><option value="NIO">NIO</option><option value="NOK">NOK</option><option value="NPR">NPR</option><option value="NZD">NZD</option><option value="OMR">OMR</option><option value="PAB">PAB</option><option value="PEN">PEN</option><option value="PGK">PGK</option><option value="PHP">PHP</option><option value="PKR">PKR</option><option value="PLN">PLN</option><option value="PYG">PYG</option><option value="QAR">QAR</option><option value="RON">RON</option><option value="RSD">RSD</option><option value="RUB">RUB</option><option value="RWF">RWF</option><option value="SAR">SAR</option><option value="SBD">SBD</option><option value="SCR">SCR</option><option value="SDG">SDG</option><option value="SEK">SEK</option><option value="SGD">SGD</option><option value="SHP">SHP</option><option value="SLL">SLL</option><option value="SOS">SOS</option><option value="SRD">SRD</option><option value="STN">STN</option><option value="SVC">SVC</option><option value="SYP">SYP</option><option value="SZL">SZL</option><option value="THB">THB</option><option value="TJS">TJS</option><option value="TMT">TMT</option><option value="TND">TND</option><option value="TOP">TOP</option><option value="TRY">TRY</option><option value="TTD">TTD</option><option value="TWD">TWD</option><option value="TZS">TZS</option><option value="UAH">UAH</option><option value="UGX">UGX</option><option value="USD">USD</option><option value="UYU">UYU</option><option value="UZS">UZS</option><option value="VES">VES</option><option value="VND">VND</option><option value="VUV">VUV</option><option value="WST">WST</option><option value="XAF">XAF</option><option value="XCD">XCD</option><option value="XOF">XOF</option><option value="XPF">XPF</option><option value="YER">YER</option><option value="ZAR">ZAR</option><option value="ZMW">ZMW</option><option value="ZWL">ZWL</option></select></div></td><td><input type="number" min="0" step="any" placeholder="" value="" oninput="calcRow(this)"></td><td class="cad-out">—</td><td class="del-col"><button class="btn-del" onclick="delRow(this)" title="Remove row">×</button></td></tr><tr><td class="num">5</td><td><input type="date" value=""></td><td><input type="text" value=""></td><td><div style="display:flex;gap:3px;align-items:center;"><input type="number" min="0" step="0.01" placeholder="0.00" style="flex:1;min-width:0;" value="" oninput="calcRow(this)"><select style="width:62px;font-size:11px;" onchange="calcRow(this)"><option value="AED">AED</option><option value="AFN">AFN</option><option value="ALL">ALL</option><option value="AMD">AMD</option><option value="ANG">ANG</option><option value="AOA">AOA</option><option value="ARS">ARS</option><option value="AUD">AUD</option><option value="AWG">AWG</option><option value="AZN">AZN</option><option value="BAM">BAM</option><option value="BBD">BBD</option><option value="BDT">BDT</option><option value="BGN">BGN</option><option value="BHD">BHD</option><option value="BIF">BIF</option><option value="BMD">BMD</option><option value="BND">BND</option><option value="BOB">BOB</option><option value="BRL">BRL</option><option value="BSD">BSD</option><option value="BTN">BTN</option><option value="BWP">BWP</option><option value="BYN">BYN</option><option value="BZD">BZD</option><option value="CAD" selected="">CAD</option><option value="CDF">CDF</option><option value="CHF">CHF</option><option value="CLP">CLP</option><option value="CNY">CNY</option><option value="COP">COP</option><option value="CRC">CRC</option><option value="CUP">CUP</option><option value="CVE">CVE</option><option value="CZK">CZK</option><option value="DJF">DJF</option><option value="DKK">DKK</option><option value="DOP">DOP</option><option value="DZD">DZD</option><option value="EGP">EGP</option><option value="ERN">ERN</option><option value="ETB">ETB</option><option value="EUR">EUR</option><option value="FJD">FJD</option><option value="FKP">FKP</option><option value="GBP">GBP</option><option value="GEL">GEL</option><option value="GHS">GHS</option><option value="GIP">GIP</option><option value="GMD">GMD</option><option value="GNF">GNF</option><option value="GTQ">GTQ</option><option value="GYD">GYD</option><option value="HKD">HKD</option><option value="HNL">HNL</option><option value="HRK">HRK</option><option value="HTG">HTG</option><option value="HUF">HUF</option><option value="IDR">IDR</option><option value="ILS">ILS</option><option value="INR">INR</option><option value="IQD">IQD</option><option value="IRR">IRR</option><option value="ISK">ISK</option><option value="JMD">JMD</option><option value="JOD">JOD</option><option value="JPY">JPY</option><option value="KES">KES</option><option value="KGS">KGS</option><option value="KHR">KHR</option><option value="KMF">KMF</option><option value="KPW">KPW</option><option value="KRW">KRW</option><option value="KWD">KWD</option><option value="KYD">KYD</option><option value="KZT">KZT</option><option value="LAK">LAK</option><option value="LBP">LBP</option><option value="LKR">LKR</option><option value="LRD">LRD</option><option value="LSL">LSL</option><option value="LYD">LYD</option><option value="MAD">MAD</option><option value="MDL">MDL</option><option value="MGA">MGA</option><option value="MKD">MKD</option><option value="MMK">MMK</option><option value="MNT">MNT</option><option value="MOP">MOP</option><option value="MRU">MRU</option><option value="MUR">MUR</option><option value="MVR">MVR</option><option value="MWK">MWK</option><option value="MXN">MXN</option><option value="MYR">MYR</option><option value="MZN">MZN</option><option value="NAD">NAD</option><option value="NGN">NGN</option><option value="NIO">NIO</option><option value="NOK">NOK</option><option value="NPR">NPR</option><option value="NZD">NZD</option><option value="OMR">OMR</option><option value="PAB">PAB</option><option value="PEN">PEN</option><option value="PGK">PGK</option><option value="PHP">PHP</option><option value="PKR">PKR</option><option value="PLN">PLN</option><option value="PYG">PYG</option><option value="QAR">QAR</option><option value="RON">RON</option><option value="RSD">RSD</option><option value="RUB">RUB</option><option value="RWF">RWF</option><option value="SAR">SAR</option><option value="SBD">SBD</option><option value="SCR">SCR</option><option value="SDG">SDG</option><option value="SEK">SEK</option><option value="SGD">SGD</option><option value="SHP">SHP</option><option value="SLL">SLL</option><option value="SOS">SOS</option><option value="SRD">SRD</option><option value="STN">STN</option><option value="SVC">SVC</option><option value="SYP">SYP</option><option value="SZL">SZL</option><option value="THB">THB</option><option value="TJS">TJS</option><option value="TMT">TMT</option><option value="TND">TND</option><option value="TOP">TOP</option><option value="TRY">TRY</option><option value="TTD">TTD</option><option value="TWD">TWD</option><option value="TZS">TZS</option><option value="UAH">UAH</option><option value="UGX">UGX</option><option value="USD">USD</option><option value="UYU">UYU</option><option value="UZS">UZS</option><option value="VES">VES</option><option value="VND">VND</option><option value="VUV">VUV</option><option value="WST">WST</option><option value="XAF">XAF</option><option value="XCD">XCD</option><option value="XOF">XOF</option><option value="XPF">XPF</option><option value="YER">YER</option><option value="ZAR">ZAR</option><option value="ZMW">ZMW</option><option value="ZWL">ZWL</option></select></div></td><td><input type="number" min="0" step="any" placeholder="" value="" oninput="calcRow(this)"></td><td class="cad-out">—</td><td class="del-col"><button class="btn-del" onclick="delRow(this)" title="Remove row">×</button></td></tr><tr><td class="num">6</td><td><input type="date" value=""></td><td><input type="text" value=""></td><td><div style="display:flex;gap:3px;align-items:center;"><input type="number" min="0" step="0.01" placeholder="0.00" style="flex:1;min-width:0;" value="" oninput="calcRow(this)"><select style="width:62px;font-size:11px;" onchange="calcRow(this)"><option value="AED">AED</option><option value="AFN">AFN</option><option value="ALL">ALL</option><option value="AMD">AMD</option><option value="ANG">ANG</option><option value="AOA">AOA</option><option value="ARS">ARS</option><option value="AUD">AUD</option><option value="AWG">AWG</option><option value="AZN">AZN</option><option value="BAM">BAM</option><option value="BBD">BBD</option><option value="BDT">BDT</option><option value="BGN">BGN</option><option value="BHD">BHD</option><option value="BIF">BIF</option><option value="BMD">BMD</option><option value="BND">BND</option><option value="BOB">BOB</option><option value="BRL">BRL</option><option value="BSD">BSD</option><option value="BTN">BTN</option><option value="BWP">BWP</option><option value="BYN">BYN</option><option value="BZD">BZD</option><option value="CAD" selected="">CAD</option><option value="CDF">CDF</option><option value="CHF">CHF</option><option value="CLP">CLP</option><option value="CNY">CNY</option><option value="COP">COP</option><option value="CRC">CRC</option><option value="CUP">CUP</option><option value="CVE">CVE</option><option value="CZK">CZK</option><option value="DJF">DJF</option><option value="DKK">DKK</option><option value="DOP">DOP</option><option value="DZD">DZD</option><option value="EGP">EGP</option><option value="ERN">ERN</option><option value="ETB">ETB</option><option value="EUR">EUR</option><option value="FJD">FJD</option><option value="FKP">FKP</option><option value="GBP">GBP</option><option value="GEL">GEL</option><option value="GHS">GHS</option><option value="GIP">GIP</option><option value="GMD">GMD</option><option value="GNF">GNF</option><option value="GTQ">GTQ</option><option value="GYD">GYD</option><option value="HKD">HKD</option><option value="HNL">HNL</option><option value="HRK">HRK</option><option value="HTG">HTG</option><option value="HUF">HUF</option><option value="IDR">IDR</option><option value="ILS">ILS</option><option value="INR">INR</option><option value="IQD">IQD</option><option value="IRR">IRR</option><option value="ISK">ISK</option><option value="JMD">JMD</option><option value="JOD">JOD</option><option value="JPY">JPY</option><option value="KES">KES</option><option value="KGS">KGS</option><option value="KHR">KHR</option><option value="KMF">KMF</option><option value="KPW">KPW</option><option value="KRW">KRW</option><option value="KWD">KWD</option><option value="KYD">KYD</option><option value="KZT">KZT</option><option value="LAK">LAK</option><option value="LBP">LBP</option><option value="LKR">LKR</option><option value="LRD">LRD</option><option value="LSL">LSL</option><option value="LYD">LYD</option><option value="MAD">MAD</option><option value="MDL">MDL</option><option value="MGA">MGA</option><option value="MKD">MKD</option><option value="MMK">MMK</option><option value="MNT">MNT</option><option value="MOP">MOP</option><option value="MRU">MRU</option><option value="MUR">MUR</option><option value="MVR">MVR</option><option value="MWK">MWK</option><option value="MXN">MXN</option><option value="MYR">MYR</option><option value="MZN">MZN</option><option value="NAD">NAD</option><option value="NGN">NGN</option><option value="NIO">NIO</option><option value="NOK">NOK</option><option value="NPR">NPR</option><option value="NZD">NZD</option><option value="OMR">OMR</option><option value="PAB">PAB</option><option value="PEN">PEN</option><option value="PGK">PGK</option><option value="PHP">PHP</option><option value="PKR">PKR</option><option value="PLN">PLN</option><option value="PYG">PYG</option><option value="QAR">QAR</option><option value="RON">RON</option><option value="RSD">RSD</option><option value="RUB">RUB</option><option value="RWF">RWF</option><option value="SAR">SAR</option><option value="SBD">SBD</option><option value="SCR">SCR</option><option value="SDG">SDG</option><option value="SEK">SEK</option><option value="SGD">SGD</option><option value="SHP">SHP</option><option value="SLL">SLL</option><option value="SOS">SOS</option><option value="SRD">SRD</option><option value="STN">STN</option><option value="SVC">SVC</option><option value="SYP">SYP</option><option value="SZL">SZL</option><option value="THB">THB</option><option value="TJS">TJS</option><option value="TMT">TMT</option><option value="TND">TND</option><option value="TOP">TOP</option><option value="TRY">TRY</option><option value="TTD">TTD</option><option value="TWD">TWD</option><option value="TZS">TZS</option><option value="UAH">UAH</option><option value="UGX">UGX</option><option value="USD">USD</option><option value="UYU">UYU</option><option value="UZS">UZS</option><option value="VES">VES</option><option value="VND">VND</option><option value="VUV">VUV</option><option value="WST">WST</option><option value="XAF">XAF</option><option value="XCD">XCD</option><option value="XOF">XOF</option><option value="XPF">XPF</option><option value="YER">YER</option><option value="ZAR">ZAR</option><option value="ZMW">ZMW</option><option value="ZWL">ZWL</option></select></div></td><td><input type="number" min="0" step="any" placeholder="" value="" oninput="calcRow(this)"></td><td class="cad-out">—</td><td class="del-col"><button class="btn-del" onclick="delRow(this)" title="Remove row">×</button></td></tr><tr><td class="num">7</td><td><input type="date" value=""></td><td><input type="text" value=""></td><td><div style="display:flex;gap:3px;align-items:center;"><input type="number" min="0" step="0.01" placeholder="0.00" style="flex:1;min-width:0;" value="" oninput="calcRow(this)"><select style="width:62px;font-size:11px;" onchange="calcRow(this)"><option value="AED">AED</option><option value="AFN">AFN</option><option value="ALL">ALL</option><option value="AMD">AMD</option><option value="ANG">ANG</option><option value="AOA">AOA</option><option value="ARS">ARS</option><option value="AUD">AUD</option><option value="AWG">AWG</option><option value="AZN">AZN</option><option value="BAM">BAM</option><option value="BBD">BBD</option><option value="BDT">BDT</option><option value="BGN">BGN</option><option value="BHD">BHD</option><option value="BIF">BIF</option><option value="BMD">BMD</option><option value="BND">BND</option><option value="BOB">BOB</option><option value="BRL">BRL</option><option value="BSD">BSD</option><option value="BTN">BTN</option><option value="BWP">BWP</option><option value="BYN">BYN</option><option value="BZD">BZD</option><option value="CAD" selected="">CAD</option><option value="CDF">CDF</option><option value="CHF">CHF</option><option value="CLP">CLP</option><option value="CNY">CNY</option><option value="COP">COP</option><option value="CRC">CRC</option><option value="CUP">CUP</option><option value="CVE">CVE</option><option value="CZK">CZK</option><option value="DJF">DJF</option><option value="DKK">DKK</option><option value="DOP">DOP</option><option value="DZD">DZD</option><option value="EGP">EGP</option><option value="ERN">ERN</option><option value="ETB">ETB</option><option value="EUR">EUR</option><option value="FJD">FJD</option><option value="FKP">FKP</option><option value="GBP">GBP</option><option value="GEL">GEL</option><option value="GHS">GHS</option><option value="GIP">GIP</option><option value="GMD">GMD</option><option value="GNF">GNF</option><option value="GTQ">GTQ</option><option value="GYD">GYD</option><option value="HKD">HKD</option><option value="HNL">HNL</option><option value="HRK">HRK</option><option value="HTG">HTG</option><option value="HUF">HUF</option><option value="IDR">IDR</option><option value="ILS">ILS</option><option value="INR">INR</option><option value="IQD">IQD</option><option value="IRR">IRR</option><option value="ISK">ISK</option><option value="JMD">JMD</option><option value="JOD">JOD</option><option value="JPY">JPY</option><option value="KES">KES</option><option value="KGS">KGS</option><option value="KHR">KHR</option><option value="KMF">KMF</option><option value="KPW">KPW</option><option value="KRW">KRW</option><option value="KWD">KWD</option><option value="KYD">KYD</option><option value="KZT">KZT</option><option value="LAK">LAK</option><option value="LBP">LBP</option><option value="LKR">LKR</option><option value="LRD">LRD</option><option value="LSL">LSL</option><option value="LYD">LYD</option><option value="MAD">MAD</option><option value="MDL">MDL</option><option value="MGA">MGA</option><option value="MKD">MKD</option><option value="MMK">MMK</option><option value="MNT">MNT</option><option value="MOP">MOP</option><option value="MRU">MRU</option><option value="MUR">MUR</option><option value="MVR">MVR</option><option value="MWK">MWK</option><option value="MXN">MXN</option><option value="MYR">MYR</option><option value="MZN">MZN</option><option value="NAD">NAD</option><option value="NGN">NGN</option><option value="NIO">NIO</option><option value="NOK">NOK</option><option value="NPR">NPR</option><option value="NZD">NZD</option><option value="OMR">OMR</option><option value="PAB">PAB</option><option value="PEN">PEN</option><option value="PGK">PGK</option><option value="PHP">PHP</option><option value="PKR">PKR</option><option value="PLN">PLN</option><option value="PYG">PYG</option><option value="QAR">QAR</option><option value="RON">RON</option><option value="RSD">RSD</option><option value="RUB">RUB</option><option value="RWF">RWF</option><option value="SAR">SAR</option><option value="SBD">SBD</option><option value="SCR">SCR</option><option value="SDG">SDG</option><option value="SEK">SEK</option><option value="SGD">SGD</option><option value="SHP">SHP</option><option value="SLL">SLL</option><option value="SOS">SOS</option><option value="SRD">SRD</option><option value="STN">STN</option><option value="SVC">SVC</option><option value="SYP">SYP</option><option value="SZL">SZL</option><option value="THB">THB</option><option value="TJS">TJS</option><option value="TMT">TMT</option><option value="TND">TND</option><option value="TOP">TOP</option><option value="TRY">TRY</option><option value="TTD">TTD</option><option value="TWD">TWD</option><option value="TZS">TZS</option><option value="UAH">UAH</option><option value="UGX">UGX</option><option value="USD">USD</option><option value="UYU">UYU</option><option value="UZS">UZS</option><option value="VES">VES</option><option value="VND">VND</option><option value="VUV">VUV</option><option value="WST">WST</option><option value="XAF">XAF</option><option value="XCD">XCD</option><option value="XOF">XOF</option><option value="XPF">XPF</option><option value="YER">YER</option><option value="ZAR">ZAR</option><option value="ZMW">ZMW</option><option value="ZWL">ZWL</option></select></div></td><td><input type="number" min="0" step="any" placeholder="" value="" oninput="calcRow(this)"></td><td class="cad-out">—</td><td class="del-col"><button class="btn-del" onclick="delRow(this)" title="Remove row">×</button></td></tr><tr><td class="num">8</td><td><input type="date" value=""></td><td><input type="text" value=""></td><td><div style="display:flex;gap:3px;align-items:center;"><input type="number" min="0" step="0.01" placeholder="0.00" style="flex:1;min-width:0;" value="" oninput="calcRow(this)"><select style="width:62px;font-size:11px;" onchange="calcRow(this)"><option value="AED">AED</option><option value="AFN">AFN</option><option value="ALL">ALL</option><option value="AMD">AMD</option><option value="ANG">ANG</option><option value="AOA">AOA</option><option value="ARS">ARS</option><option value="AUD">AUD</option><option value="AWG">AWG</option><option value="AZN">AZN</option><option value="BAM">BAM</option><option value="BBD">BBD</option><option value="BDT">BDT</option><option value="BGN">BGN</option><option value="BHD">BHD</option><option value="BIF">BIF</option><option value="BMD">BMD</option><option value="BND">BND</option><option value="BOB">BOB</option><option value="BRL">BRL</option><option value="BSD">BSD</option><option value="BTN">BTN</option><option value="BWP">BWP</option><option value="BYN">BYN</option><option value="BZD">BZD</option><option value="CAD" selected="">CAD</option><option value="CDF">CDF</option><option value="CHF">CHF</option><option value="CLP">CLP</option><option value="CNY">CNY</option><option value="COP">COP</option><option value="CRC">CRC</option><option value="CUP">CUP</option><option value="CVE">CVE</option><option value="CZK">CZK</option><option value="DJF">DJF</option><option value="DKK">DKK</option><option value="DOP">DOP</option><option value="DZD">DZD</option><option value="EGP">EGP</option><option value="ERN">ERN</option><option value="ETB">ETB</option><option value="EUR">EUR</option><option value="FJD">FJD</option><option value="FKP">FKP</option><option value="GBP">GBP</option><option value="GEL">GEL</option><option value="GHS">GHS</option><option value="GIP">GIP</option><option value="GMD">GMD</option><option value="GNF">GNF</option><option value="GTQ">GTQ</option><option value="GYD">GYD</option><option value="HKD">HKD</option><option value="HNL">HNL</option><option value="HRK">HRK</option><option value="HTG">HTG</option><option value="HUF">HUF</option><option value="IDR">IDR</option><option value="ILS">ILS</option><option value="INR">INR</option><option value="IQD">IQD</option><option value="IRR">IRR</option><option value="ISK">ISK</option><option value="JMD">JMD</option><option value="JOD">JOD</option><option value="JPY">JPY</option><option value="KES">KES</option><option value="KGS">KGS</option><option value="KHR">KHR</option><option value="KMF">KMF</option><option value="KPW">KPW</option><option value="KRW">KRW</option><option value="KWD">KWD</option><option value="KYD">KYD</option><option value="KZT">KZT</option><option value="LAK">LAK</option><option value="LBP">LBP</option><option value="LKR">LKR</option><option value="LRD">LRD</option><option value="LSL">LSL</option><option value="LYD">LYD</option><option value="MAD">MAD</option><option value="MDL">MDL</option><option value="MGA">MGA</option><option value="MKD">MKD</option><option value="MMK">MMK</option><option value="MNT">MNT</option><option value="MOP">MOP</option><option value="MRU">MRU</option><option value="MUR">MUR</option><option value="MVR">MVR</option><option value="MWK">MWK</option><option value="MXN">MXN</option><option value="MYR">MYR</option><option value="MZN">MZN</option><option value="NAD">NAD</option><option value="NGN">NGN</option><option value="NIO">NIO</option><option value="NOK">NOK</option><option value="NPR">NPR</option><option value="NZD">NZD</option><option value="OMR">OMR</option><option value="PAB">PAB</option><option value="PEN">PEN</option><option value="PGK">PGK</option><option value="PHP">PHP</option><option value="PKR">PKR</option><option value="PLN">PLN</option><option value="PYG">PYG</option><option value="QAR">QAR</option><option value="RON">RON</option><option value="RSD">RSD</option><option value="RUB">RUB</option><option value="RWF">RWF</option><option value="SAR">SAR</option><option value="SBD">SBD</option><option value="SCR">SCR</option><option value="SDG">SDG</option><option value="SEK">SEK</option><option value="SGD">SGD</option><option value="SHP">SHP</option><option value="SLL">SLL</option><option value="SOS">SOS</option><option value="SRD">SRD</option><option value="STN">STN</option><option value="SVC">SVC</option><option value="SYP">SYP</option><option value="SZL">SZL</option><option value="THB">THB</option><option value="TJS">TJS</option><option value="TMT">TMT</option><option value="TND">TND</option><option value="TOP">TOP</option><option value="TRY">TRY</option><option value="TTD">TTD</option><option value="TWD">TWD</option><option value="TZS">TZS</option><option value="UAH">UAH</option><option value="UGX">UGX</option><option value="USD">USD</option><option value="UYU">UYU</option><option value="UZS">UZS</option><option value="VES">VES</option><option value="VND">VND</option><option value="VUV">VUV</option><option value="WST">WST</option><option value="XAF">XAF</option><option value="XCD">XCD</option><option value="XOF">XOF</option><option value="XPF">XPF</option><option value="YER">YER</option><option value="ZAR">ZAR</option><option value="ZMW">ZMW</option><option value="ZWL">ZWL</option></select></div></td><td><input type="number" min="0" step="any" placeholder="" value="" oninput="calcRow(this)"></td><td class="cad-out">—</td><td class="del-col"><button class="btn-del" onclick="delRow(this)" title="Remove row">×</button></td></tr><tr><td class="num">9</td><td><input type="date" value=""></td><td><input type="text" value=""></td><td><div style="display:flex;gap:3px;align-items:center;"><input type="number" min="0" step="0.01" placeholder="0.00" style="flex:1;min-width:0;" value="" oninput="calcRow(this)"><select style="width:62px;font-size:11px;" onchange="calcRow(this)"><option value="AED">AED</option><option value="AFN">AFN</option><option value="ALL">ALL</option><option value="AMD">AMD</option><option value="ANG">ANG</option><option value="AOA">AOA</option><option value="ARS">ARS</option><option value="AUD">AUD</option><option value="AWG">AWG</option><option value="AZN">AZN</option><option value="BAM">BAM</option><option value="BBD">BBD</option><option value="BDT">BDT</option><option value="BGN">BGN</option><option value="BHD">BHD</option><option value="BIF">BIF</option><option value="BMD">BMD</option><option value="BND">BND</option><option value="BOB">BOB</option><option value="BRL">BRL</option><option value="BSD">BSD</option><option value="BTN">BTN</option><option value="BWP">BWP</option><option value="BYN">BYN</option><option value="BZD">BZD</option><option value="CAD" selected="">CAD</option><option value="CDF">CDF</option><option value="CHF">CHF</option><option value="CLP">CLP</option><option value="CNY">CNY</option><option value="COP">COP</option><option value="CRC">CRC</option><option value="CUP">CUP</option><option value="CVE">CVE</option><option value="CZK">CZK</option><option value="DJF">DJF</option><option value="DKK">DKK</option><option value="DOP">DOP</option><option value="DZD">DZD</option><option value="EGP">EGP</option><option value="ERN">ERN</option><option value="ETB">ETB</option><option value="EUR">EUR</option><option value="FJD">FJD</option><option value="FKP">FKP</option><option value="GBP">GBP</option><option value="GEL">GEL</option><option value="GHS">GHS</option><option value="GIP">GIP</option><option value="GMD">GMD</option><option value="GNF">GNF</option><option value="GTQ">GTQ</option><option value="GYD">GYD</option><option value="HKD">HKD</option><option value="HNL">HNL</option><option value="HRK">HRK</option><option value="HTG">HTG</option><option value="HUF">HUF</option><option value="IDR">IDR</option><option value="ILS">ILS</option><option value="INR">INR</option><option value="IQD">IQD</option><option value="IRR">IRR</option><option value="ISK">ISK</option><option value="JMD">JMD</option><option value="JOD">JOD</option><option value="JPY">JPY</option><option value="KES">KES</option><option value="KGS">KGS</option><option value="KHR">KHR</option><option value="KMF">KMF</option><option value="KPW">KPW</option><option value="KRW">KRW</option><option value="KWD">KWD</option><option value="KYD">KYD</option><option value="KZT">KZT</option><option value="LAK">LAK</option><option value="LBP">LBP</option><option value="LKR">LKR</option><option value="LRD">LRD</option><option value="LSL">LSL</option><option value="LYD">LYD</option><option value="MAD">MAD</option><option value="MDL">MDL</option><option value="MGA">MGA</option><option value="MKD">MKD</option><option value="MMK">MMK</option><option value="MNT">MNT</option><option value="MOP">MOP</option><option value="MRU">MRU</option><option value="MUR">MUR</option><option value="MVR">MVR</option><option value="MWK">MWK</option><option value="MXN">MXN</option><option value="MYR">MYR</option><option value="MZN">MZN</option><option value="NAD">NAD</option><option value="NGN">NGN</option><option value="NIO">NIO</option><option value="NOK">NOK</option><option value="NPR">NPR</option><option value="NZD">NZD</option><option value="OMR">OMR</option><option value="PAB">PAB</option><option value="PEN">PEN</option><option value="PGK">PGK</option><option value="PHP">PHP</option><option value="PKR">PKR</option><option value="PLN">PLN</option><option value="PYG">PYG</option><option value="QAR">QAR</option><option value="RON">RON</option><option value="RSD">RSD</option><option value="RUB">RUB</option><option value="RWF">RWF</option><option value="SAR">SAR</option><option value="SBD">SBD</option><option value="SCR">SCR</option><option value="SDG">SDG</option><option value="SEK">SEK</option><option value="SGD">SGD</option><option value="SHP">SHP</option><option value="SLL">SLL</option><option value="SOS">SOS</option><option value="SRD">SRD</option><option value="STN">STN</option><option value="SVC">SVC</option><option value="SYP">SYP</option><option value="SZL">SZL</option><option value="THB">THB</option><option value="TJS">TJS</option><option value="TMT">TMT</option><option value="TND">TND</option><option value="TOP">TOP</option><option value="TRY">TRY</option><option value="TTD">TTD</option><option value="TWD">TWD</option><option value="TZS">TZS</option><option value="UAH">UAH</option><option value="UGX">UGX</option><option value="USD">USD</option><option value="UYU">UYU</option><option value="UZS">UZS</option><option value="VES">VES</option><option value="VND">VND</option><option value="VUV">VUV</option><option value="WST">WST</option><option value="XAF">XAF</option><option value="XCD">XCD</option><option value="XOF">XOF</option><option value="XPF">XPF</option><option value="YER">YER</option><option value="ZAR">ZAR</option><option value="ZMW">ZMW</option><option value="ZWL">ZWL</option></select></div></td><td><input type="number" min="0" step="any" placeholder="" value="" oninput="calcRow(this)"></td><td class="cad-out">—</td><td class="del-col"><button class="btn-del" onclick="delRow(this)" title="Remove row">×</button></td></tr><tr><td class="num">10</td><td><input type="date" value=""></td><td><input type="text" value=""></td><td><div style="display:flex;gap:3px;align-items:center;"><input type="number" min="0" step="0.01" placeholder="0.00" style="flex:1;min-width:0;" value="" oninput="calcRow(this)"><select style="width:62px;font-size:11px;" onchange="calcRow(this)"><option value="AED">AED</option><option value="AFN">AFN</option><option value="ALL">ALL</option><option value="AMD">AMD</option><option value="ANG">ANG</option><option value="AOA">AOA</option><option value="ARS">ARS</option><option value="AUD">AUD</option><option value="AWG">AWG</option><option value="AZN">AZN</option><option value="BAM">BAM</option><option value="BBD">BBD</option><option value="BDT">BDT</option><option value="BGN">BGN</option><option value="BHD">BHD</option><option value="BIF">BIF</option><option value="BMD">BMD</option><option value="BND">BND</option><option value="BOB">BOB</option><option value="BRL">BRL</option><option value="BSD">BSD</option><option value="BTN">BTN</option><option value="BWP">BWP</option><option value="BYN">BYN</option><option value="BZD">BZD</option><option value="CAD" selected="">CAD</option><option value="CDF">CDF</option><option value="CHF">CHF</option><option value="CLP">CLP</option><option value="CNY">CNY</option><option value="COP">COP</option><option value="CRC">CRC</option><option value="CUP">CUP</option><option value="CVE">CVE</option><option value="CZK">CZK</option><option value="DJF">DJF</option><option value="DKK">DKK</option><option value="DOP">DOP</option><option value="DZD">DZD</option><option value="EGP">EGP</option><option value="ERN">ERN</option><option value="ETB">ETB</option><option value="EUR">EUR</option><option value="FJD">FJD</option><option value="FKP">FKP</option><option value="GBP">GBP</option><option value="GEL">GEL</option><option value="GHS">GHS</option><option value="GIP">GIP</option><option value="GMD">GMD</option><option value="GNF">GNF</option><option value="GTQ">GTQ</option><option value="GYD">GYD</option><option value="HKD">HKD</option><option value="HNL">HNL</option><option value="HRK">HRK</option><option value="HTG">HTG</option><option value="HUF">HUF</option><option value="IDR">IDR</option><option value="ILS">ILS</option><option value="INR">INR</option><option value="IQD">IQD</option><option value="IRR">IRR</option><option value="ISK">ISK</option><option value="JMD">JMD</option><option value="JOD">JOD</option><option value="JPY">JPY</option><option value="KES">KES</option><option value="KGS">KGS</option><option value="KHR">KHR</option><option value="KMF">KMF</option><option value="KPW">KPW</option><option value="KRW">KRW</option><option value="KWD">KWD</option><option value="KYD">KYD</option><option value="KZT">KZT</option><option value="LAK">LAK</option><option value="LBP">LBP</option><option value="LKR">LKR</option><option value="LRD">LRD</option><option value="LSL">LSL</option><option value="LYD">LYD</option><option value="MAD">MAD</option><option value="MDL">MDL</option><option value="MGA">MGA</option><option value="MKD">MKD</option><option value="MMK">MMK</option><option value="MNT">MNT</option><option value="MOP">MOP</option><option value="MRU">MRU</option><option value="MUR">MUR</option><option value="MVR">MVR</option><option value="MWK">MWK</option><option value="MXN">MXN</option><option value="MYR">MYR</option><option value="MZN">MZN</option><option value="NAD">NAD</option><option value="NGN">NGN</option><option value="NIO">NIO</option><option value="NOK">NOK</option><option value="NPR">NPR</option><option value="NZD">NZD</option><option value="OMR">OMR</option><option value="PAB">PAB</option><option value="PEN">PEN</option><option value="PGK">PGK</option><option value="PHP">PHP</option><option value="PKR">PKR</option><option value="PLN">PLN</option><option value="PYG">PYG</option><option value="QAR">QAR</option><option value="RON">RON</option><option value="RSD">RSD</option><option value="RUB">RUB</option><option value="RWF">RWF</option><option value="SAR">SAR</option><option value="SBD">SBD</option><option value="SCR">SCR</option><option value="SDG">SDG</option><option value="SEK">SEK</option><option value="SGD">SGD</option><option value="SHP">SHP</option><option value="SLL">SLL</option><option value="SOS">SOS</option><option value="SRD">SRD</option><option value="STN">STN</option><option value="SVC">SVC</option><option value="SYP">SYP</option><option value="SZL">SZL</option><option value="THB">THB</option><option value="TJS">TJS</option><option value="TMT">TMT</option><option value="TND">TND</option><option value="TOP">TOP</option><option value="TRY">TRY</option><option value="TTD">TTD</option><option value="TWD">TWD</option><option value="TZS">TZS</option><option value="UAH">UAH</option><option value="UGX">UGX</option><option value="USD">USD</option><option value="UYU">UYU</option><option value="UZS">UZS</option><option value="VES">VES</option><option value="VND">VND</option><option value="VUV">VUV</option><option value="WST">WST</option><option value="XAF">XAF</option><option value="XCD">XCD</option><option value="XOF">XOF</option><option value="XPF">XPF</option><option value="YER">YER</option><option value="ZAR">ZAR</option><option value="ZMW">ZMW</option><option value="ZWL">ZWL</option></select></div></td><td><input type="number" min="0" step="any" placeholder="" value="" oninput="calcRow(this)"></td><td class="cad-out">—</td><td class="del-col"><button class="btn-del" onclick="delRow(this)" title="Remove row">×</button></td></tr></tbody>
+    <tfoot>
+      <tr class="total-row">
+        <td colspan="5" class="total-lbl">TOTAL</td>
+        <td class="total-val" id="grandTotal">$0.00</td>
+        <td style="border:none;background:transparent;"></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <div class="sig-section">
+    <div style="flex:1;max-width:280px;">
+      <div><input type="text" id="sigName" value="Lanyu Huang" style="border:none;border-bottom:1px solid #333;outline:none;font-family:Arial,sans-serif;font-size:13px;font-weight:700;width:100%;background:transparent;padding-bottom:2px;"></div>
+      <div class="sig-label">Name</div>
+    </div>
+    <div style="flex:1;margin-left:2rem;">
+      <div style="border-bottom:1px solid #333;min-height:22px;"></div>
+      <div class="sig-label">Signature</div>
+    </div>
+  </div>
+
+  <div class="footnote">All expenses receipts must be submitted with expense sheet</div>
+</div>
+
+<!-- Action bar -->
+<div class="actions">
+  <div style="display:flex;gap:10px;">
+    <button class="btn-add" onclick="addRow()">+ Add row</button>
+    <button class="btn-clear" onclick="clearAll()">Clear all</button>
+  </div>
+  <button class="btn-print" onclick="window.print()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+    Print / Save as PDF
+  </button>
+</div>
+
+<!-- Save / Load bar -->
+<div class="save-bar">
+  <span class="save-bar-label">Trips</span>
+
+  <button class="btn-save" onclick="saveTrip()">💾 Save</button>
+
+  <select class="saved-select" id="savedSelect"><option value="">— Load a saved trip —</option><option value="J2026-618">J2026-618</option></select>
+  <button class="btn-load" onclick="loadTrip()">Load</button>
+  <button class="btn-delete-saved" onclick="deleteTrip()">Delete</button>
+
+  <span class="save-status" id="saveStatus"></span>
+</div>
+</div>
+
+<script>
+const CURRENCIES = [
+  'AED','AFN','ALL','AMD','ANG','AOA','ARS','AUD','AWG','AZN',
+  'BAM','BBD','BDT','BGN','BHD','BIF','BMD','BND','BOB','BRL','BSD','BTN','BWP','BYN','BZD',
+  'CAD','CDF','CHF','CLP','CNY','COP','CRC','CUP','CVE','CZK',
+  'DJF','DKK','DOP','DZD',
+  'EGP','ERN','ETB','EUR',
+  'FJD','FKP',
+  'GBP','GEL','GHS','GIP','GMD','GNF','GTQ','GYD',
+  'HKD','HNL','HRK','HTG','HUF',
+  'IDR','ILS','INR','IQD','IRR','ISK',
+  'JMD','JOD','JPY',
+  'KES','KGS','KHR','KMF','KPW','KRW','KWD','KYD','KZT',
+  'LAK','LBP','LKR','LRD','LSL','LYD',
+  'MAD','MDL','MGA','MKD','MMK','MNT','MOP','MRU','MUR','MVR','MWK','MXN','MYR','MZN',
+  'NAD','NGN','NIO','NOK','NPR','NZD',
+  'OMR',
+  'PAB','PEN','PGK','PHP','PKR','PLN','PYG',
+  'QAR',
+  'RON','RSD','RUB','RWF',
+  'SAR','SBD','SCR','SDG','SEK','SGD','SHP','SLL','SOS','SRD','STN','SVC','SYP','SZL',
+  'THB','TJS','TMT','TND','TOP','TRY','TTD','TWD','TZS',
+  'UAH','UGX','USD','UYU','UZS',
+  'VES','VND','VUV',
+  'WST',
+  'XAF','XCD','XOF','XPF',
+  'YER',
+  'ZAR','ZMW','ZWL'
+];
+
+const STORAGE_PREFIX = 'foxflight_trip_';
+let rowCount = 0;
+
+function currOpts(sel) {
+  return CURRENCIES.map(c => '<option value="' + c + '"' + (c === sel ? ' selected' : '') + '>' + c + '</option>').join('');
+}
+
+function addRow(date, desc, amt, curr, rate, cad) {
+  rowCount++;
+  const tr = document.createElement('tr');
+  tr.innerHTML =
+    '<td class="num">' + rowCount + '</td>' +
+    '<td><input type="date" value="' + (date||'') + '" /></td>' +
+    '<td><input type="text" value="' + (desc||'') + '" /></td>' +
+    '<td><div style="display:flex;gap:3px;align-items:center;">' +
+      '<input type="number" min="0" step="0.01" placeholder="0.00" style="flex:1;min-width:0;" value="' + (amt||'') + '" oninput="calcRow(this)" />' +
+      '<select style="width:62px;font-size:11px;" onchange="calcRow(this)">' + currOpts(curr||'CAD') + '</select>' +
+    '</div></td>' +
+    '<td><input type="number" min="0" step="any" placeholder="" value="' + (rate||'') + '" oninput="calcRow(this)" /></td>' +
+    '<td class="cad-out">' + (cad||'\u2014') + '</td>' +
+    '<td class="del-col"><button class="btn-del" onclick="delRow(this)" title="Remove row">&times;</button></td>';
+  document.getElementById('expBody').appendChild(tr);
+  renumber();
+  calcTotal();
+}
+
+function calcRow(el) {
+  const tr = el.closest('tr');
+  const amtInput  = tr.querySelector('td:nth-child(4) input[type=number]');
+  const rateInput = tr.querySelector('td:nth-child(5) input');
+  const cadCell   = tr.querySelector('.cad-out');
+  const amt  = parseFloat(amtInput.value);
+  const rate = parseFloat(rateInput.value);
+  if (!isNaN(amt) && amt > 0 && !isNaN(rate) && rate > 0) {
+    cadCell.textContent = '$' + (amt * rate * 1.03).toFixed(2);
+  } else {
+    cadCell.textContent = '\u2014';
+  }
+  calcTotal();
+}
+
+function calcTotal() {
+  let tot = 0;
+  document.querySelectorAll('#expBody .cad-out').forEach(c => {
+    const v = parseFloat(c.textContent.replace('$', ''));
+    if (!isNaN(v)) tot += v;
+  });
+  document.getElementById('grandTotal').textContent = '$' + tot.toFixed(2);
+}
+
+function delRow(btn) { btn.closest('tr').remove(); renumber(); calcTotal(); }
+
+function renumber() {
+  document.querySelectorAll('#expBody tr').forEach((tr, i) => {
+    tr.querySelector('.num').textContent = i + 1;
+  });
+}
+
+function clearAll() {
+  if (!confirm('Clear all fields and expenses?')) return;
+  ['patientName','fromLoc','toLoc','flightNum','depDateTime','retDateTime'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('expBody').innerHTML = '';
+  rowCount = 0;
+  calcTotal();
+  setStatus('');
+}
+
+// ---- SAVE / LOAD ----
+
+function getFormData() {
+  const rows = [];
+  document.querySelectorAll('#expBody tr').forEach(tr => {
+    rows.push({
+      date: tr.querySelector('td:nth-child(2) input').value,
+      desc: tr.querySelector('td:nth-child(3) input').value,
+      amt:  tr.querySelector('td:nth-child(4) input[type=number]').value,
+      curr: tr.querySelector('td:nth-child(4) select').value,
+      rate: tr.querySelector('td:nth-child(5) input').value,
+      cad:  tr.querySelector('.cad-out').textContent
+    });
+  });
+  return {
+    patientName: document.getElementById('patientName').value,
+    fromLoc:     document.getElementById('fromLoc').value,
+    toLoc:       document.getElementById('toLoc').value,
+    flightNum:   document.getElementById('flightNum').value,
+    depDateTime: document.getElementById('depDateTime').value,
+    retDateTime: document.getElementById('retDateTime').value,
+    sigName:     document.getElementById('sigName').value,
+    rows
+  };
+}
+
+function restoreFormData(data) {
+  document.getElementById('patientName').value = data.patientName || '';
+  document.getElementById('fromLoc').value     = data.fromLoc     || '';
+  document.getElementById('toLoc').value       = data.toLoc       || '';
+  const fn = data.flightNum || ''; document.getElementById('flightNum').value = fn.startsWith('J2026-') ? fn.replace('J2026-','') : fn;
+  document.getElementById('depDateTime').value = data.depDateTime || '';
+  document.getElementById('retDateTime').value = data.retDateTime || '';
+  document.getElementById('sigName').value     = data.sigName     || 'Lanyu Huang';
+  document.getElementById('expBody').innerHTML = '';
+  rowCount = 0;
+  (data.rows || []).forEach(r => addRow(r.date, r.desc, r.amt, r.curr, r.rate, r.cad));
+}
+
+function getFlightName() {
+  const suffix = document.getElementById('flightNum').value.trim();
+  return suffix ? 'J2026-' + suffix : '';
+}
+
+function saveTrip() {
+  const flightName = getFlightName();
+  if (!flightName) {
+    alert('Please enter a Flight # before saving — it is used as the file name.');
+    return;
+  }
+  const key = STORAGE_PREFIX + flightName;
+  const data = getFormData();
+  data.savedAt = new Date().toLocaleString();
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+    setStatus('Saved as "' + flightName + '" at ' + data.savedAt);
+    refreshDropdown(flightName);
+  } catch(e) {
+    alert('Save failed — storage may be full.');
+  }
+}
+
+function loadTrip() {
+  const sel = document.getElementById('savedSelect').value;
+  if (!sel) { alert('Please select a trip to load.'); return; }
+  const raw = localStorage.getItem(STORAGE_PREFIX + sel);
+  if (!raw) { alert('Could not find saved trip.'); return; }
+  if (!confirm('Load "' + sel + '"? Unsaved changes will be lost.')) return;
+  restoreFormData(JSON.parse(raw));
+  setStatus('Loaded "' + sel + '"');
+}
+
+function deleteTrip() {
+  const sel = document.getElementById('savedSelect').value;
+  if (!sel) { alert('Please select a trip to delete.'); return; }
+  if (!confirm('Delete saved trip "' + sel + '"? This cannot be undone.')) return;
+  localStorage.removeItem(STORAGE_PREFIX + sel);
+  refreshDropdown('');
+  setStatus('"' + sel + '" deleted.');
+}
+
+function refreshDropdown(selectVal) {
+  const el = document.getElementById('savedSelect');
+  el.innerHTML = '<option value="">— Load a saved trip —</option>';
+  const keys = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k.startsWith(STORAGE_PREFIX)) keys.push(k.replace(STORAGE_PREFIX, ''));
+  }
+  keys.sort().forEach(name => {
+    const opt = document.createElement('option');
+    opt.value = name;
+    opt.textContent = name;
+    if (name === selectVal) opt.selected = true;
+    el.appendChild(opt);
+  });
+}
+
+function setStatus(msg) {
+  document.getElementById('saveStatus').textContent = msg;
+}
+
+// ---- PRINT ----
+function prepareForPrint() {
+  document.querySelectorAll('input, select').forEach(el => {
+    let isEmpty = false;
+    if (el.tagName === 'SELECT') {
+      const tr = el.closest('tr');
+      if (tr) {
+        const amtInput = tr.querySelector('td:nth-child(4) input[type=number]');
+        if (!amtInput || !amtInput.value.trim()) isEmpty = true;
+      }
+    } else {
+      isEmpty = !el.value || el.value.trim() === '';
+    }
+    if (isEmpty) el.classList.add('print-hide');
+  });
+}
+
+function restoreAfterPrint() {
+  document.querySelectorAll('.print-hide').forEach(el => el.classList.remove('print-hide'));
+}
+
+window.addEventListener('beforeprint', prepareForPrint);
+window.addEventListener('afterprint', restoreAfterPrint);
+
+// ---- DATE SHORTCUTS ----
+// In any date input, type "t", "t+2", "t-1" etc. then press Enter or Tab
+function applyDateShortcut(el) {
+  const val = el.value.trim().toLowerCase();
+  const match = val.match(/^t([+-]\d+)?$/);
+  if (!match) return;
+  const offset = match[1] ? parseInt(match[1]) : 0;
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  const yyyy = d.getFullYear();
+  const mm   = String(d.getMonth() + 1).padStart(2, '0');
+  const dd   = String(d.getDate()).padStart(2, '0');
+  el.value = yyyy + '-' + mm + '-' + dd;
+}
+
+document.addEventListener('keydown', function(e) {
+  const el = e.target;
+  if (el.tagName !== 'INPUT' || el.type !== 'date') return;
+  if (e.key === 'Enter' || e.key === 'Tab') applyDateShortcut(el);
+});
+
+document.addEventListener('blur', function(e) {
+  const el = e.target;
+  if (el.tagName === 'INPUT' && el.type === 'date') applyDateShortcut(el);
+}, true);
+
+// Init
+refreshDropdown('');
+for (let i = 0; i < 10; i++) addRow();
+</script>
+
+
+</body></html>
