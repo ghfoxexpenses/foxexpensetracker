@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0056)file:///C:/Users/ginah/Downloads/expense_tracker_18.html -->
+<!-- saved from url=(0055)file:///C:/Users/ginah/Downloads/expense_tracker_1.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
@@ -87,6 +87,26 @@ select {
 .btn-delete-saved { background: none; border: 1px solid #e05050; color: #e05050; padding: 7px 10px; border-radius: 5px; font-size: 12px; cursor: pointer; }
 .saved-select { padding: 7px 6px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; font-family: Arial, sans-serif; flex: 1; min-width: 120px; background: #fff; }
 .save-status { font-size: 11px; color: #888; font-style: italic; width: 100%; }
+
+/* Receipt photos */
+.receipt-bar { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 10px 12px; margin-top: 10px; }
+.receipt-bar-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #888; margin-bottom: 8px; }
+.receipt-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+.receipt-thumb { position: relative; width: 80px; height: 80px; }
+.receipt-thumb img { width: 80px; height: 80px; object-fit: cover; border-radius: 5px; border: 1px solid #ccc; }
+.receipt-thumb .btn-remove-photo { position: absolute; top: -6px; right: -6px; background: #e05050; color: #fff; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; cursor: pointer; line-height: 18px; text-align: center; padding: 0; }
+.receipt-thumb .receipt-label { font-size: 9px; color: #888; text-align: center; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 80px; }
+.btn-photo { background: none; border: 1.5px dashed #aaa; color: #666; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+.btn-photo:hover { border-color: #1a3caa; color: #1a3caa; }
+
+/* Print receipt pages - one per page after the expense sheet */
+.receipt-print-pages { display: none; }
+@media print {
+  .receipt-print-pages { display: block; }
+  .receipt-page { page-break-before: always; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 0.5in; }
+  .receipt-page img { max-width: 100%; max-height: 90vh; object-fit: contain; }
+  .receipt-page-label { font-size: 11px; color: #555; margin-bottom: 8px; font-family: Arial, sans-serif; }
+}
 
 @media print {
   @page { size: letter portrait; margin: 0.5in; }
@@ -204,6 +224,22 @@ select {
   <span class="save-status" id="saveStatus"></span>
 </div>
 </div>
+
+<!-- Receipt Photos -->
+<div class="receipt-bar">
+  <div class="receipt-bar-title">📷 Receipt Photos</div>
+  <div class="receipt-grid" id="receiptGrid"></div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+    <label class="btn-photo" style="cursor:pointer;">
+      📷 Add photo
+      <input type="file" accept="image/*" capture="environment" id="photoInput" style="display:none;" onchange="addPhoto(this)" multiple="">
+    </label>
+    <span style="font-size:11px;color:#aaa;">Photos print one per page after the expense sheet</span>
+  </div>
+</div>
+
+<!-- Hidden receipt pages for printing -->
+<div class="receipt-print-pages" id="receiptPrintPages"></div>
 
 <script>
 const CURRENCIES = [
@@ -451,6 +487,102 @@ document.addEventListener('blur', function(e) {
   const el = e.target;
   if (el.tagName === 'INPUT' && el.type === 'date') applyDateShortcut(el);
 }, true);
+
+// ---- RECEIPTS ----
+let receiptPhotos = []; // array of { id, dataUrl, name }
+
+function addPhoto(input) {
+  const files = Array.from(input.files);
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      // Compress image to keep storage manageable
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const MAX = 1200;
+        let w = img.width, h = img.height;
+        if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+        if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+        const photo = { id: Date.now() + Math.random(), dataUrl, name: file.name };
+        receiptPhotos.push(photo);
+        renderReceiptGrid();
+        renderReceiptPrintPages();
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = ''; // reset so same file can be added again if needed
+}
+
+function removePhoto(id) {
+  receiptPhotos = receiptPhotos.filter(p => p.id !== id);
+  renderReceiptGrid();
+  renderReceiptPrintPages();
+}
+
+function renderReceiptGrid() {
+  const grid = document.getElementById('receiptGrid');
+  grid.innerHTML = '';
+  receiptPhotos.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'receipt-thumb';
+    div.innerHTML =
+      '<img src="' + p.dataUrl + '" alt="Receipt ' + (i+1) + '" />' +
+      '<button class="btn-remove-photo" onclick="removePhoto(' + p.id + ')" title="Remove">&times;</button>' +
+      '<div class="receipt-label">Receipt ' + (i+1) + '</div>';
+    grid.appendChild(div);
+  });
+}
+
+function renderReceiptPrintPages() {
+  const container = document.getElementById('receiptPrintPages');
+  container.innerHTML = '';
+  receiptPhotos.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'receipt-page';
+    div.innerHTML =
+      '<div class="receipt-page-label">Receipt ' + (i+1) + ' of ' + receiptPhotos.length + '</div>' +
+      '<img src="' + p.dataUrl + '" alt="Receipt ' + (i+1) + '" />';
+    container.appendChild(div);
+  });
+}
+
+// Save receipts with trip data
+const _origGetFormData = getFormData;
+getFormData = function() {
+  const data = _origGetFormData();
+  data.photos = receiptPhotos.map(p => ({ id: p.id, dataUrl: p.dataUrl, name: p.name }));
+  return data;
+};
+
+// Restore receipts when loading a trip
+const _origRestoreFormData = restoreFormData;
+restoreFormData = function(data) {
+  _origRestoreFormData(data);
+  receiptPhotos = (data.photos || []);
+  renderReceiptGrid();
+  renderReceiptPrintPages();
+};
+
+// Clear receipts on clearAll
+const _origClearAll = clearAll;
+clearAll = function() {
+  // clearAll already confirms, so we call it and also clear photos if confirmed
+  const rowsBefore = document.querySelectorAll('#expBody tr').length;
+  _origClearAll();
+  const rowsAfter = document.querySelectorAll('#expBody tr').length;
+  if (rowsAfter !== rowsBefore || rowsBefore === 0) {
+    // clearAll was confirmed and ran
+  }
+  receiptPhotos = [];
+  renderReceiptGrid();
+  renderReceiptPrintPages();
+};
 
 // Init
 refreshDropdown('');
