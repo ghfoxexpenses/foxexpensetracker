@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0055)file:///C:/Users/ginah/Downloads/expense_tracker_5.html -->
+<!-- saved from url=(0055)file:///C:/Users/ginah/Downloads/expense_tracker_7.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -288,14 +288,16 @@ function clearAll() {
 function getFormData() {
   const rows = [];
   document.querySelectorAll('#expBody tr').forEach(tr => {
-    rows.push({
-      date: tr.querySelector('td:nth-child(2) input').value,
-      desc: tr.querySelector('td:nth-child(3) input').value,
-      amt:  tr.querySelector('td:nth-child(4) input[type=number]').value,
-      curr: tr.querySelector('td:nth-child(4) select').value,
-      rate: tr.querySelector('td:nth-child(5) input').value,
-      cad:  tr.querySelector('.cad-out').textContent
-    });
+    const date = tr.querySelector('td:nth-child(2) input').value;
+    const desc = tr.querySelector('td:nth-child(3) input').value;
+    const amt  = tr.querySelector('td:nth-child(4) input[type=number]').value;
+    const curr = tr.querySelector('td:nth-child(4) select').value;
+    const rate = tr.querySelector('td:nth-child(5) input').value;
+    const cad  = tr.querySelector('.cad-out').textContent;
+    // Save all rows that have any data entered
+    if (date || desc || amt) {
+      rows.push({ date, desc, amt, curr, rate, cad });
+    }
   });
   return {
     patientName: document.getElementById('patientName').value,
@@ -321,6 +323,11 @@ function restoreFormData(data) {
   document.getElementById('expBody').innerHTML = '';
   rowCount = 0;
   (data.rows || []).forEach(r => addRow(r.date, r.desc, r.amt, r.curr, r.rate, r.cad));
+  // Always ensure at least 10 rows, but never add extras if already >= 10
+  const currentRows = document.querySelectorAll('#expBody tr').length;
+  if (currentRows < 10) {
+    for (let i = currentRows; i < 10; i++) addRow();
+  }
 }
 
 function getFlightName() {
